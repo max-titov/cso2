@@ -16,28 +16,53 @@ char *outbox;
 int myPid = 0;
 int otherPid = 0;
 
+long long half_sec_nano = 500000000;
+long long one_sec_nano = 1000000000;
+
 long long nsecs()
 {
 	struct timespec t;
 	clock_gettime(CLOCK_MONOTONIC, &t);
-	printf("sec: %lu  nsec: %lu\n", t.tv_sec, t.tv_nsec);
+	// printf("sec: %lld  nsec: %lld\n", t.tv_sec, t.tv_nsec);
 	return t.tv_sec * 1000000000 + t.tv_nsec;
 }
 
-void time_empty_func()
+long long test_timing_overhead()
 {
+	int count = 100;
+	long long total_elapsed_time = 0;
+	for (int i = 0; i < count; i++)
+	{
+		long long time_before = nsecs();
+		long long elapsed_time = nsecs() - time_before;
+		total_elapsed_time += elapsed_time;
+	}
+	return total_elapsed_time / count;
+}
+
+void empty_func()
+{
+	return;
 }
 
 void timing_func(int choice)
 {
-	long long time_before = nsecs();
-	if (choice == 1)
+	long long timing_overhead = test_timing_overhead();
+	int count = 0;
+	long long total_elapsed_time = 0;
+	while (total_elapsed_time < half_sec_nano)
 	{
-		time_empty_func();
+		count++;
+		long long time_before = nsecs();
+		if (choice == 1)
+			empty_func();
+
+		long long elapsed_time = nsecs() - time_before;
+		total_elapsed_time += elapsed_time - timing_overhead;
 	}
-	long long time_after = nsecs();
-	long long elapsed_time = time_after - time_before;
-	printf("Elapsed Time: %lu", elapsed_time);
+	long long average = total_elapsed_time / count;
+	float average_sec = (float)average / one_sec_nano;
+	printf("Choice: %d Number of runs: %d Average time (s): %f", count, average_sec);
 }
 
 int main(int argc, char *argv[])
