@@ -62,7 +62,7 @@ void timing_func(int choice)
 	}
 	total_elapsed_time -= timing_overhead * count; // adjust for timing overhead
 	long long average = total_elapsed_time / count;
-	double double average_sec = (double)average / one_sec_nano;
+	double average_sec = (double)average / one_sec_nano;
 	printf("Choice: %d Number of runs: %d Average time (s): %f\n", choice, count, average_sec);
 }
 
