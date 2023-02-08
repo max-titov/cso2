@@ -1,6 +1,6 @@
 CC = clang
-gettimings: timging.o
-	$(CC) -o gettimings timging.o
+gettimings: timing.o
+	$(CC) -o gettimings timing.o
 
-timging.o: timing.c
+timing.o: timing.c
 	$(CC) -c timing.c
