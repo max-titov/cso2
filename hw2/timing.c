@@ -65,6 +65,36 @@ void system_func()
 	syscall("/bin/true");
 }
 
+void sigaction_setup()
+{
+	struct sigaction sa;
+	sa.sa_handler = &sig_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGTERM, &sa, NULL);
+}
+
+void setup_pids()
+{
+	myPid = getpid();
+	printf("This program's PID: %d\n", myPid);
+	printf("Enter the other instances's PID\n");
+	scanf("%d", &otherPid);
+}
+
+static void sig_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		return;
+	}
+}
+
+void signal_curr_func()
+{
+	kill(otherPid, SIGINT);
+}
+
 void timing_func(int choice)
 {
 	// warmup
@@ -110,6 +140,15 @@ int main(int argc, char *argv[])
 	}
 	char *p;
 	int choice = strtol(argv[1], &p, 10);
+	if (choice == 4)
+	{
+		sigaction_setup();
+	}
+	if (choice == -1 || choice == 5)
+	{
+		setup_pids();
+		sigaction_setup();
+	}
 	timing_func(choice);
 	return 0;
 }
