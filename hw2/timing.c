@@ -30,19 +30,22 @@ void time_empty_func()
 
 void timing_func(int choice)
 {
-
+	long long time_before = nsecs();
 	if (choice == 1)
 	{
 		time_empty_func();
 	}
+	long long time_after = nsecs();
+	long long elapsed_time = time_after - time_before;
+	printf("Elapsed Time: %lu", elapsed_time);
 }
 
 int main(int argc, char *argv[])
 {
 	if (argc < 2)
 	{
-		printf("Please provide an argument (-1,1,2,3,4,5)");
-		printf("Terminating");
+		printf("Please provide an argument (-1,1,2,3,4,5)\n");
+		printf("Terminating\n");
 		return 0;
 	}
 	char *p;
