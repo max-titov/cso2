@@ -92,7 +92,7 @@ void setup_pids()
 
 void signal_curr_func()
 {
-	kill(otherPid, SIGINT);
+	kill(myPid, SIGINT);
 }
 
 void timing_func(int choice)
@@ -145,9 +145,7 @@ int main(int argc, char *argv[])
 	int choice = strtol(argv[1], &p, 10);
 	if (choice == 4)
 	{
-		printf("boo");
 		sigaction_setup();
-		printf("yay");
 	}
 	if (choice == -1 || choice == 5)
 	{
