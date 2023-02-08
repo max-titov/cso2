@@ -97,6 +97,8 @@ void signal_curr_func()
 
 void timing_func(int choice)
 {
+	long long timing_overhead = test_timing_overhead();
+
 	// warmup
 	for (int i = 0; i < 1000000; i++)
 	{
@@ -109,8 +111,6 @@ void timing_func(int choice)
 		else if (choice == 4)
 			signal_curr_func();
 	}
-
-	long long timing_overhead = test_timing_overhead();
 	int count = 0;
 	long long total_elapsed_time = 0;
 	while (total_elapsed_time < half_sec_nano)
@@ -128,7 +128,6 @@ void timing_func(int choice)
 		long long elapsed_time = nsecs() - time_before;
 		total_elapsed_time += elapsed_time;
 	}
-	// total_elapsed_time -= timing_overhead * count; // adjust for timing overhead
 	long long average = total_elapsed_time / count - timing_overhead;
 	double average_sec = (double)average / one_sec_nano;
 	printf("Choice: %d  Number of runs: %d  Average time (ns): %lld  Average time (s): %f\n", choice, count, average, average_sec);
@@ -146,7 +145,9 @@ int main(int argc, char *argv[])
 	int choice = strtol(argv[1], &p, 10);
 	if (choice == 4)
 	{
+		printf("boo");
 		sigaction_setup();
+		printf("yay");
 	}
 	if (choice == -1 || choice == 5)
 	{
