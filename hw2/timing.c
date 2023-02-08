@@ -20,6 +20,8 @@ int otherPid = 0;
 long long half_sec_nano = 500000000;
 long long one_sec_nano = 1000000000;
 
+int signal_received = 0;
+
 long long nsecs()
 {
 	struct timespec t;
@@ -71,6 +73,16 @@ static void sig_handler(int signum)
 	{
 		return;
 	}
+	else if (signum == SIGTERM)
+	{
+		kill(otherPid, SIGUSR1);
+		return;
+	}
+	else if (signum == SIGUSR1)
+	{
+		signal_received = 1;
+		return;
+	}
 }
 
 void sigaction_setup()
@@ -80,6 +92,8 @@ void sigaction_setup()
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGTERM, &sa, NULL);
+	sigaction(SIGUSR1, &sa, NULL);
 }
 
 void setup_pids()
@@ -93,6 +107,16 @@ void setup_pids()
 void signal_curr_func()
 {
 	kill(myPid, SIGINT);
+}
+
+void signal_other_func()
+{
+	kill(otherPid, SIGTERM);
+	while (!signal_received)
+	{
+		usleep(1);
+	}
+	signal_received = 0;
 }
 
 void timing_func(int choice)
@@ -110,6 +134,8 @@ void timing_func(int choice)
 			system_func();
 		else if (choice == 4)
 			signal_curr_func();
+		else if (choice == 5)
+			signal_other_func();
 	}
 	int count = 0;
 	long long total_elapsed_time = 0;
@@ -125,12 +151,22 @@ void timing_func(int choice)
 			system_func();
 		else if (choice == 4)
 			signal_curr_func();
+		else if (choice == 5)
+			signal_other_func();
 		long long elapsed_time = nsecs() - time_before;
 		total_elapsed_time += elapsed_time;
 	}
 	long long average = total_elapsed_time / count - timing_overhead;
 	double average_sec = (double)average / one_sec_nano;
 	printf("Choice: %d  Number of runs: %d  Average time (ns): %lld  Average time (s): %f\n", choice, count, average, average_sec);
+}
+
+void infinite_loop()
+{
+	while (1)
+	{
+		usleep(10);
+	}
 }
 
 int main(int argc, char *argv[])
@@ -151,6 +187,10 @@ int main(int argc, char *argv[])
 	{
 		setup_pids();
 		sigaction_setup();
+	}
+	if (choice == -1)
+	{
+		infinite_loop();
 	}
 	timing_func(choice);
 	return 0;
