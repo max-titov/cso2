@@ -29,7 +29,7 @@ long long nsecs()
 
 long long test_timing_overhead()
 {
-	int count = 100;
+	int count = 1000;
 	long long total_elapsed_time = 0;
 	for (int i = 0; i < count; i++)
 	{
@@ -45,6 +45,11 @@ void empty_func()
 	return;
 }
 
+void pid_func()
+{
+	myPid = getpid();
+}
+
 void timing_func(int choice)
 {
 	long long timing_overhead = test_timing_overhead();
@@ -56,7 +61,8 @@ void timing_func(int choice)
 		long long time_before = nsecs();
 		if (choice == 1)
 			empty_func();
-
+		else if (choice == 2)
+			pid_func();
 		long long elapsed_time = nsecs() - time_before;
 		total_elapsed_time += elapsed_time;
 	}
