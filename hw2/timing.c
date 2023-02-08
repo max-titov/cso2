@@ -29,17 +29,17 @@ long long nsecs()
 
 long long test_timing_overhead()
 {
-	int count = 1000000;
 	// warmup
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < 1000000; i++)
 	{
 		long long time_before = nsecs();
 		long long elapsed_time = nsecs() - time_before;
 	}
-
+	int count = 0;
 	long long total_elapsed_time = 0;
-	for (int i = 0; i < count; i++)
+	while (total_elapsed_time < half_sec_nano)
 	{
+		count++;
 		long long time_before = nsecs();
 		long long elapsed_time = nsecs() - time_before;
 		total_elapsed_time += elapsed_time;
@@ -61,6 +61,15 @@ void pid_func()
 
 void timing_func(int choice)
 {
+	// warmup
+	for (int i = 0; i < 1000000; i++)
+	{
+		if (choice == 1)
+			empty_func();
+		else if (choice == 2)
+			pid_func();
+	}
+
 	long long timing_overhead = test_timing_overhead();
 	int count = 0;
 	long long total_elapsed_time = 0;
