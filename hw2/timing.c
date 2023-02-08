@@ -69,7 +69,7 @@ void system_func()
 
 static void sig_handler(int signum)
 {
-	if (signum == SIGINT)
+	if (signum == SIGQUIT)
 	{
 		return;
 	}
@@ -91,7 +91,7 @@ void sigaction_setup()
 	sa.sa_handler = &sig_handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGTERM, &sa, NULL);
 	sigaction(SIGUSR1, &sa, NULL);
 }
@@ -106,7 +106,7 @@ void setup_pids()
 
 void signal_curr_func()
 {
-	kill(myPid, SIGINT);
+	kill(myPid, SIGQUIT);
 }
 
 void signal_other_func()

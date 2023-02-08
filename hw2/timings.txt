@@ -1,5 +1,22 @@
-Empty Function: Number of runs: 19443993  Average time (ns): 1
-getpid: Number of runs: 19203785  Average time (ns): 4
-system call: Number of runs: 1506662  Average time (ns): 308
-signal to current process: Number of runs: 242752  Average time (ns): 2037
+Timing overhead is warmed up for 1000000 iterations
+Then timing overhead is looped for a half second (its normally around 22-23ns)
+
+The selected function warms up for 1000000 iterations
+Then the function is looped for a half second
+The average time in nanoseconds is then calculated and the timing overhead is subtracted
+
+Results:
+Empty Function: 
+Number of runs: 19443993  Average time (ns): 1
+
+getpid: 
+Number of runs: 19203785  Average time (ns): 4
+
+system call: 
+Number of runs: 1506662  Average time (ns): 308
+
+signal to current process: 
+Number of runs: 242752  Average time (ns): 2037
+
 signal to other process: 
+Number of runs: 47180  Average time (ns): 10573
