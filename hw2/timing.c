@@ -106,6 +106,8 @@ void timing_func(int choice)
 			pid_func();
 		else if (choice == 3)
 			system_func();
+		else if (choice == 4)
+			signal_curr_func();
 	}
 
 	long long timing_overhead = test_timing_overhead();
@@ -121,6 +123,8 @@ void timing_func(int choice)
 			pid_func();
 		else if (choice == 3)
 			system_func();
+		else if (choice == 4)
+			signal_curr_func();
 		long long elapsed_time = nsecs() - time_before;
 		total_elapsed_time += elapsed_time;
 	}
