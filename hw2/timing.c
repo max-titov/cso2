@@ -59,6 +59,11 @@ void pid_func()
 	myPid = getpid();
 }
 
+void system_func()
+{
+	system("/bin/true");
+}
+
 void timing_func(int choice)
 {
 	// warmup
@@ -68,6 +73,8 @@ void timing_func(int choice)
 			empty_func();
 		else if (choice == 2)
 			pid_func();
+		else if (choice == 3)
+			system_func();
 	}
 
 	long long timing_overhead = test_timing_overhead();
@@ -81,6 +88,8 @@ void timing_func(int choice)
 			empty_func();
 		else if (choice == 2)
 			pid_func();
+		else if (choice == 3)
+			system_func();
 		long long elapsed_time = nsecs() - time_before;
 		total_elapsed_time += elapsed_time;
 	}
