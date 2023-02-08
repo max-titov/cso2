@@ -65,6 +65,14 @@ void system_func()
 	syscall("/bin/true");
 }
 
+static void sig_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		return;
+	}
+}
+
 void sigaction_setup()
 {
 	struct sigaction sa;
@@ -80,14 +88,6 @@ void setup_pids()
 	printf("This program's PID: %d\n", myPid);
 	printf("Enter the other instances's PID\n");
 	scanf("%d", &otherPid);
-}
-
-static void sig_handler(int signum)
-{
-	if (signum == SIGINT)
-	{
-		return;
-	}
 }
 
 void signal_curr_func()
