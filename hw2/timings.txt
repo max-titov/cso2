@@ -1,0 +1,5 @@
+Empty Function: Number of runs: 19443993  Average time (ns): 1
+getpid: Number of runs: 19203785  Average time (ns): 4
+system call: Number of runs: 1506662  Average time (ns): 308
+signal to current process: Number of runs: 242752  Average time (ns): 2037
+signal to other process: 
