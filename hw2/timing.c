@@ -29,7 +29,7 @@ long long nsecs()
 
 long long test_timing_overhead()
 {
-	int count = 10000;
+	int count = 1000000;
 	// warmup
 	for (int i = 0; i < count; i++)
 	{
@@ -45,7 +45,7 @@ long long test_timing_overhead()
 		total_elapsed_time += elapsed_time;
 	}
 	long long average = total_elapsed_time / count;
-	printf("Timing Overhead: %lld", average);
+	printf("Timing Overhead: %lld\n", average);
 	return average;
 }
 
@@ -76,7 +76,7 @@ void timing_func(int choice)
 		total_elapsed_time += elapsed_time;
 	}
 	// total_elapsed_time -= timing_overhead * count; // adjust for timing overhead
-	long long average = total_elapsed_time / count;
+	long long average = total_elapsed_time / count - timing_overhead;
 	double average_sec = (double)average / one_sec_nano;
 	printf("Choice: %d  Number of runs: %d  Average time (ns): %lld  Average time (s): %f\n", choice, count, average, average_sec);
 }
