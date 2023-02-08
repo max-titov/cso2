@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/mman.h>
+#include <sys/syscall.h>
 
 int size = 4096;
 char inbox_array[1024];
@@ -61,7 +62,7 @@ void pid_func()
 
 void system_func()
 {
-	system("/bin/true");
+	syscall("/bin/true");
 }
 
 void timing_func(int choice)
