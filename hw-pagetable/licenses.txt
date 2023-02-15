@@ -1,0 +1,8 @@
+GPL: Its a free license that allows the software to be distributed and changed with no restrictions.
+Did not use as it gives other people too much power over my code.
+
+MIT: This license allows full reuse of the code as long as the original copy of the MIT license is included in the new distribution.
+I used this one as it ensures that I have credit for the original code I wrote but still leaves the code open source.
+
+Apache: This license allows users to reuse the software for any purpose with no concern for royalties.
+I did not use this one because royalties do not apply to this project.
