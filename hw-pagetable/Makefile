@@ -1,6 +1,7 @@
 CC = clang
 CFLAGS = -Wall
 LDFLAGS = -Wall
+LIBS = -lm
 
 TARGETS= main.o libmlpt.a pagetable
 
@@ -16,4 +17,4 @@ libmlpt.a: main.o
 	ar rcs libmlpt.a main.o
 
 pagetable: libmlpt.a
-	$(CC) -o pagetable libmlpt.a
+	$(CC) -o pagetable libmlpt.a -lm

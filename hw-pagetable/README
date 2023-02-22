@@ -1,0 +1,12 @@
+# Virtual to Physical Address Mapping using Pagetables
+written by Max Titov <br>
+computing ID: uhg2nv
+
+## How to Customize config.h
+config.h contains two variables: LEVELS and POBITS. LEVELS is the depth of the pagetable tree and can be set to any integer between 1 and 6 inclusive. POBITS is the number of bits in the page offset, which determines how big each page is. This value should be set to any integer between 4 and 18 inclusive. Additionally, the values chosen for LEVELS and POBITS should hold true for: (POBITS − 3) × (LEVELS + 1) <= 60.
+
+## Usecase for code
+This codebase can be used to gain intuitive understanding of how virtual memory maps to physical memory using pagetables. This understanding will give the user a better understanding of how memory in their computer works and help them become better computer scientists.
+
+## Limitations and Bugs
+This codebase currently only supports LEVELS being set to 1. Any other value will not work as intended.
