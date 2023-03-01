@@ -24,7 +24,7 @@ void page_allocate(size_t va){
     }
 
     //get the vpn size in bits based on POBITS
-    size_t vpn_size = POBITS -3;
+    size_t vpn_size = POBITS - 3;
 
     //extract vpn from the va
     size_t vpn = ((va >> POBITS) >> (vpn_size * (LEVELS - 1))) & ((1 << vpn_size) - 1);
@@ -53,7 +53,7 @@ size_t translate(size_t va){
     }
 
     //get the vpn size in bits based on POBITS
-    size_t vpn_size = POBITS-3;
+    size_t vpn_size = POBITS - 3;
 
     //extract vpn from the va
     size_t vpn = ((va >> POBITS) >> (vpn_size * (LEVELS - 1))) & ((1 << vpn_size) - 1);
