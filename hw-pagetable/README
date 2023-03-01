@@ -6,7 +6,20 @@ computing ID: uhg2nv
 config.h contains two variables: LEVELS and POBITS. LEVELS is the depth of the pagetable tree and can be set to any integer between 1 and 6 inclusive. POBITS is the number of bits in the page offset, which determines how big each page is. This value should be set to any integer between 4 and 18 inclusive. Additionally, the values chosen for LEVELS and POBITS should hold true for: (POBITS − 3) × (LEVELS + 1) <= 60.
 
 ## Usecase for code
-This codebase can be used to gain intuitive understanding of how virtual memory maps to physical memory using pagetables. This understanding will give the user a better understanding of how memory in their computer works and help them become better computer scientists.
+This codebase can be used to gain intuitive understanding of how virtual memory maps to physical memory using pagetables. This understanding will give the user a better understanding of how memory in their computer works and help them become better computer scientists. An example use case is setting LEVELS to 1 and POBITS to 12 and then running the following code to test the functionality of the translate function:
+```
+int *p1 = (int *)translate(0x456789abcd00);
+*p1 = 0xaabbccdd;
+short *p2 = (short *)translate(0x456789abcd02);
+printf("%04hx\n", *p2); // prints "aabb\n"
+```
+To test the page_allocate function, the following code can be run:
+```
+assert(ptbr == 0); // test that no pages are allocated yet since ptbr is still 0
+page_allocate(0x456789abcdef); // allocate a page
+assert(ptbr != 0); // check that ptbr was updated
+page_allocate(0x456789abcd00); // should not allocate a new page since its the same location as the first allocate
+```
 
 ## Limitations and Bugs
 This codebase currently only supports LEVELS being set to 1. Any other value will not work as intended.
