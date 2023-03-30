@@ -40,10 +40,8 @@ int tlb_peek(size_t va) {
     size_t tag = calc_tag(va);
     size_t vpn = calc_vpn(va);
     for (int i = 0; i < ways_n; i++) {
-        if (tag == buffer[index][i][3]) { 
-            if (buffer[index][i][2] == 1) {
-                return buffer[index][i][1]; 
-            }
+        if (tag == buffer[index][i][3] && buffer[index][i][2] == 1) { 
+			return buffer[index][i][1]; 
         }
     }
     return 0;
@@ -95,7 +93,7 @@ size_t tlb_translate(size_t va) {
 	size_t pa = 0;
 
 	int found = 0;
-    for (int way = 0; way < ways_n; i++) {
+    for (int way = 0; way < ways_n; way++) {
         if (buffer[index][way][2] == 1 && tag == buffer[index][way][3]) { 
 			found = 1;
 			ppn = buffer[index][way][0];
