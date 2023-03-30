@@ -68,20 +68,16 @@ void change_LRU(size_t index, size_t way) {
     if (prev_LRU == 0) {
         buffer[index][way][1] = 1;
         for (int i = 0; i < ways_n; i++) {
-            if (buffer[index][i][2] == 1) {
-                if (i != way) {
-                    buffer[index][i][1]++;
-                }
+            if (buffer[index][i][2] == 1 && i != way) {
+                buffer[index][i][1]++;
             }
         }
         return;
     }
     buffer[index][way][1] = 0;
     for (int i = 0; i < ways_n; i++) {
-        if (buffer[index][i][2] == 1) {
-            if (buffer[index][i][1] < prev_LRU) {
-                buffer[index][i][1]++;
-            }
+        if (buffer[index][i][2] == 1 && buffer[index][i][1] < prev_LRU) {
+            buffer[index][i][1]++;
         }
     }
 }
@@ -98,28 +94,29 @@ size_t tlb_translate(size_t va) {
     size_t ppn = 0;
 	size_t pa = 0;
 
-    for (int i = 0; i < ways_n; i++) {
-        if (buffer[index][i][2] == 1) { 
-			// valid bit is 1
-            if (tag == buffer[index][i][3]) {
-				ppn = buffer[index][i][0];
-				ppn = (ppn >> POBITS) << POBITS;
-				pa = ppn + offset;
-				change_LRU(index, i);
-				return pa;
-            }
+	int found = 0;
+    for (int way = 0; way < ways_n; i++) {
+        if (buffer[index][way][2] == 1 && tag == buffer[index][way][3]) { 
+			found = 1;
+			ppn = buffer[index][way][0];
+			ppn = (ppn >> POBITS) << POBITS;
+			pa = ppn + offset;
+			change_LRU(index, way);
         }
     }
 
-    size_t va_no_offset = vpn << POBITS;
-    ppn = translate(va_no_offset);
-    if (ppn == -1) return -1;
-    ppn = (ppn >> POBITS) << POBITS;
-    int way = retrieve_LRU(index);
-    buffer[index][way][0] = ppn + offset;
-    buffer[index][way][2] = 1; 
-    buffer[index][way][3] = tag; 
-    change_LRU(index, way);
+	if (!found){
+		size_t va_no_offset = vpn << POBITS;
+		ppn = translate(va_no_offset);
+		if (ppn == -1) return -1;
+		ppn = (ppn >> POBITS) << POBITS;
+		int way = retrieve_LRU(index);
+		pa = ppn + offset;
+		buffer[index][way][0] = pa;
+		buffer[index][way][2] = 1; 
+		buffer[index][way][3] = tag; 
+		change_LRU(index, way);
+	}
 
     return pa;
 }
