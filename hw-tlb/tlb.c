@@ -9,7 +9,7 @@
 size_t sets_n = 16;
 size_t ways_n = 4;
 size_t elements_n = 4;
-size_t buffer[sets_n][ways_n][elements_n];
+size_t buffer[16][4][4];
 
 
 size_t calc_vpn(size_t va) { 
@@ -98,7 +98,7 @@ size_t tlb_translate(size_t va) {
     size_t ppn = 0;
 
     for (int i = 0; i < ways_n; i++) {
-        if (buffer[index][i][1] == 1) { 
+        if (buffer[index][i][2] == 1) { 
 			// valid bit is 1
             if (tag == buffer[index][i][3]) {
 				ppn = buffer[index][i][0];
@@ -114,9 +114,8 @@ size_t tlb_translate(size_t va) {
     ppn = translate(va_no_offset);
     if (ppn == -1) return -1;
     ppn = (ppn >> POBITS) << POBITS;
-    size_t pa = ppn + offset;
     int way = retrieve_LRU(index);
-    buffer[index][way][0] = pa;
+    buffer[index][way][0] = ppn + offset;
     buffer[index][way][2] = 1; 
     buffer[index][way][3] = tag; 
     change_LRU(index, way);
