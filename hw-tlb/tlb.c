@@ -12,16 +12,16 @@ size_t elements_n = 4;
 size_t buffer[16][4][4];
 
 
-size_t calc_vpn(size_t va) { 
-    return va >> POBITS;
-}
-
 size_t calc_index(size_t va) { 
     return (va >> POBITS) & 0xF;
 }
 
 size_t calc_tag(size_t va) {
     return va >> (POBITS+4);
+}
+
+size_t calc_vpn(size_t va) { 
+    return va >> POBITS;
 }
 
 void tlb_clear() {
@@ -36,9 +36,9 @@ void tlb_clear() {
 }
 
 int tlb_peek(size_t va) {
-    size_t vpn = calc_vpn(va);
-    size_t index = calc_index(va);
+	size_t index = calc_index(va);
     size_t tag = calc_tag(va);
+    size_t vpn = calc_vpn(va);
     for (int i = 0; i < ways_n; i++) {
         if (tag == buffer[index][i][3]) { 
             if (buffer[index][i][2] == 1) {
