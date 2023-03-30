@@ -96,6 +96,7 @@ size_t tlb_translate(size_t va) {
     size_t offset = va & mask;
 
     size_t ppn = 0;
+	size_t pa = 0;
 
     for (int i = 0; i < ways_n; i++) {
         if (buffer[index][i][2] == 1) { 
@@ -103,7 +104,7 @@ size_t tlb_translate(size_t va) {
             if (tag == buffer[index][i][3]) {
 				ppn = buffer[index][i][0];
 				ppn = (ppn >> POBITS) << POBITS;
-				size_t pa = ppn + offset;
+				pa = ppn + offset;
 				change_LRU(index, i);
 				return pa;
             }
