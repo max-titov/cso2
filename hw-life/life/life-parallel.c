@@ -4,9 +4,9 @@
 
 /** Defines a particular task to handle */
 typedef struct {
-    size_t from;
-    size_t to;
-	size_t steps;
+    int from;
+    int to;
+	int steps;
 	LifeBoard *state;
     LifeBoard *next_state;
     pthread_barrier_t *barr;
@@ -14,9 +14,9 @@ typedef struct {
 
 void *thread_task(void *args) {
     task_description *task_info = (task_description*) args;
-	size_t from = task_info->from;
-	size_t to = task_info->from;
-	size_t width = task_info->state->width;
+	int from = task_info->from;
+	int to = task_info->to;
+	int width = task_info->state->width;
 	for (int step = 0; step < task_info->steps; step += 1) {
 
         /* We use the range [1, width - 1) here instead of
@@ -49,8 +49,8 @@ void *thread_task(void *args) {
 }
 
 void simulate_life_parallel(int threads, LifeBoard *state, int steps) {
-	size_t rows = state->height;
-	size_t rows_per_thread = rows/threads;
+	int rows = state->height;
+	int rows_per_thread = rows/threads;
 	//size_t leftover_rows = rows%threads;
 
     // store per-thread information (don't re-use, memory is shared)
